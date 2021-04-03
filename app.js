@@ -3,11 +3,15 @@ const app = express();
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 
-mongoose.connect('mongodb+srv://admin:123@cluster0.efi0m.mongodb.net/Fishing_App?retryWrites=true&w=majority',function(){console.log(mongoose.connection.readyState);});
+const userRoutes = require('./api/routes/user');
+
+mongoose.connect('mongodb+srv://admin:123@cluster0.efi0m.mongodb.net/Fishing_App_db?retryWrites=true&w=majority',function(){console.log(mongoose.connection.readyState);});
 console.log(mongoose.connection.readyState);
 
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(bodyParser.json());
+
+app.use("/user", userRoutes);
 
 app.use((req, res, next) => {
 	res.header('Access-Control-Allow-Origin', '*');
