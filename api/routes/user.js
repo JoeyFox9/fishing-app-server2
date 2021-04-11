@@ -6,6 +6,12 @@ const bcrypt = require('bcrypt');
 const User = require('../models/user');
 const { json } = require("body-parser");
 
+router.get('/info', (req, res, next) => {
+    return res.status(201).json({
+        message: 'The server is up and running my friend.'
+    })
+})
+
 router.post('/signup', (req, res, next) => {
 	User.find({email: req.body.email})
 		.exec()
