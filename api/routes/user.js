@@ -7,16 +7,12 @@ const jwt = require('jsonwebtoken');
 const User = require('../models/user');
 const { json } = require("body-parser");
 
-router.get('/info', (req, res, next) => {
-    return res.status(201).json({
-        message: 'The server is up and running my friend.'
-    })
-})
 
 router.post('/signup', (req, res, next) => {
 	User.find({email: req.body.email})
 		.exec()
 		.then(user => {
+			console.log("here")
 			if (user.length >= 1){
 				return res.status(409).json({
 					message: 'An account with this email address already exists'
@@ -54,9 +50,13 @@ router.post('/signup', (req, res, next) => {
 });
 
 router.post('/login', (req, res, next) => {
+
     User.find({email: req.body.email})
     .exec()
     .then(user => {
+		console.log("inside login on server")
+		console.log(req.body.email)
+
         if (user.length < 1){
             return res.status(401).json({
                 message: 'Auth failed'
@@ -78,6 +78,8 @@ router.post('/login', (req, res, next) => {
 					}
 				);
                 return res.status(200).json({
+					username: req.body.email,
+					user: user[0],
                     message: 'Auth successful',
 					token: token
                 });
@@ -110,3 +112,6 @@ router.delete('/:userId', (req, res, next) => {
 });
 
 module.exports = router;
+
+//References:
+//https://www.youtube.com/playlist?list=PL55RiY5tL51q4D-B63KBnygU6opNPFk_q
